@@ -1,4 +1,4 @@
-module github.com/MikeB1124/stocks-lambda-utils
+module github.com/MikeB1124/stocks-lambda-utils/v2
 
 go 1.22.4
 
