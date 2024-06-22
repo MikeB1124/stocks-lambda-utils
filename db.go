@@ -2,15 +2,32 @@ package stockslambdautils
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongoClient struct {
 	*mongo.Client
+}
+
+func NewMongoClient(username string, password string) (MongoClient, error) {
+	opts := options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@cluster0.du0vf.mongodb.net", username, password))
+	client, err := mongo.Connect(context.TODO(), opts)
+	if err != nil {
+		return MongoClient{}, err
+	}
+
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		return MongoClient{}, err
+	}
+
+	return MongoClient{client}, nil
 }
 
 func (client MongoClient) InsertEntryOrder(order AlpacaEntryOrder) error {

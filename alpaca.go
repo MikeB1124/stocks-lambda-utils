@@ -9,6 +9,15 @@ type AlpacaClient struct {
 	*alpaca.Client
 }
 
+func NewAlpacaClient(apiKey string, apiSecret string, baseUrl string) AlpacaClient {
+	client := alpaca.NewClient(alpaca.ClientOpts{
+		APIKey:    apiKey,
+		APISecret: apiSecret,
+		BaseURL:   baseUrl,
+	})
+	return AlpacaClient{client}
+}
+
 func (client AlpacaClient) GetAllAlpacaOrders() ([]alpaca.Order, error) {
 	orders, err := client.GetOrders(alpaca.GetOrdersRequest{
 		Nested: true,
