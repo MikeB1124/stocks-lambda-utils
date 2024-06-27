@@ -76,17 +76,17 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	return result, nil
 }
 
-func FormatAlpacaOrderForDB(alpacaOrder alpaca.Order) Order {
+func FormatAlpacaOrderForDB(alpacaOrder *alpaca.Order) *Order {
 	var order Order
 	order = formatOrderForDB(alpacaOrder)
 	for _, leg := range alpacaOrder.Legs {
-		order.Legs = append(order.Legs, formatOrderForDB(leg))
+		order.Legs = append(order.Legs, formatOrderForDB(&leg))
 
 	}
-	return order
+	return &order
 }
 
-func formatOrderForDB(alpacaOrder alpaca.Order) Order {
+func formatOrderForDB(alpacaOrder *alpaca.Order) Order {
 	var order Order
 	order.ID = alpacaOrder.ID
 	order.ClientOrderID = alpacaOrder.ClientOrderID
