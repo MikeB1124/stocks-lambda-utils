@@ -69,7 +69,6 @@ type Order struct {
 	TrailPercent   string             `json:"trail_percent,omitempty" bson:"trail_percent,omitempty"`
 	HWM            string             `json:"hwm,omitempty" bson:"hwm,omitempty"`
 	ExtendedHours  bool               `json:"extended_hours" bson:"extended_hours"`
-	Legs           []Order            `json:"legs,omitempty" bson:"legs,omitempty"`
 }
 
 type Response struct {
