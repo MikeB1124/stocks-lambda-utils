@@ -37,7 +37,7 @@ func (client AlpacaClient) GetAlpacaAccount() *alpaca.Account {
 	return acct
 }
 
-func (client AlpacaClient) CreateAlpacaOrder(symbol string, entryPrice float64, qty int, orderSide string, orderType string) (*alpaca.Order, error) {
+func (client AlpacaClient) CreateAlpacaOrder(symbol string, entryPrice float64, stopPrice float64, qty int, orderSide string, orderType string) (*alpaca.Order, error) {
 	qtyDecimal := decimal.NewFromInt(int64(qty))
 
 	orderRequest := alpaca.PlaceOrderRequest{
@@ -51,6 +51,11 @@ func (client AlpacaClient) CreateAlpacaOrder(symbol string, entryPrice float64, 
 	if orderType == "limit" {
 		entryPriceDecimal := decimal.NewFromFloat(entryPrice)
 		orderRequest.LimitPrice = &entryPriceDecimal
+	}
+
+	if orderType == "stop_limit" || orderType == "stop" {
+		stopPriceDecimal := decimal.NewFromFloat(stopPrice)
+		orderRequest.StopPrice = &stopPriceDecimal
 	}
 
 	order, err := client.PlaceOrder(orderRequest)
