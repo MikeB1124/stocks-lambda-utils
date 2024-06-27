@@ -59,15 +59,11 @@ type Order struct {
 	Side           alpaca.Side        `json:"side" bson:"side"`
 	TimeInForce    alpaca.TimeInForce `json:"time_in_force" bson:"time_in_force"`
 	Status         string             `json:"status" bson:"status"`
-	Notional       string             `json:"notional,omitempty" bson:"notional,omitempty"`
 	Qty            string             `json:"qty,omitempty" bson:"qty,omitempty"`
 	FilledQty      string             `json:"filled_qty" bson:"filled_qty"`
 	FilledAvgPrice string             `json:"filled_avg_price,omitempty" bson:"filled_avg_price,omitempty"`
 	LimitPrice     string             `json:"limit_price,omitempty" bson:"limit_price,omitempty"`
 	StopPrice      string             `json:"stop_price,omitempty" bson:"stop_price,omitempty"`
-	TrailPrice     string             `json:"trail_price,omitempty" bson:"trail_price,omitempty"`
-	TrailPercent   string             `json:"trail_percent,omitempty" bson:"trail_percent,omitempty"`
-	HWM            string             `json:"hwm,omitempty" bson:"hwm,omitempty"`
 	ExtendedHours  bool               `json:"extended_hours" bson:"extended_hours"`
 }
 
