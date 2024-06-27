@@ -37,26 +37,17 @@ func (client AlpacaClient) GetAlpacaAccount() *alpaca.Account {
 	return acct
 }
 
-func (client AlpacaClient) CreateBracketOrder(symbol string, entryPrice float64, qty int, stopLoss float64, takeProfit float64) (*alpaca.Order, error) {
+func (client AlpacaClient) CreateBracketOrder(symbol string, entryPrice float64, qty int, orderType string) (*alpaca.Order, error) {
 	entryPriceDecimal := decimal.NewFromFloat(entryPrice)
-	stopLossDecimal := decimal.NewFromFloat(stopLoss)
-	takeProfitDecimal := decimal.NewFromFloat(takeProfit)
 	qtyDecimal := decimal.NewFromInt(int64(qty))
 
 	order, err := client.PlaceOrder(alpaca.PlaceOrderRequest{
-		OrderClass:  alpaca.Bracket,
 		Symbol:      symbol,
 		Qty:         &qtyDecimal,
-		Side:        alpaca.Buy,
+		Side:        alpaca.Side(orderType),
 		Type:        alpaca.Limit,
 		TimeInForce: alpaca.Day,
 		LimitPrice:  &entryPriceDecimal,
-		TakeProfit: &alpaca.TakeProfit{
-			LimitPrice: &takeProfitDecimal,
-		},
-		StopLoss: &alpaca.StopLoss{
-			StopPrice: &stopLossDecimal,
-		},
 	})
 	if err != nil {
 		return nil, err

@@ -36,12 +36,13 @@ func (client MongoClient) InsertEntryOrder(order AlpacaEntryOrder) error {
 	return err
 }
 
-func (client MongoClient) UpateOrder(order alpaca.Order) (*mongo.UpdateResult, error) {
+func (client MongoClient) UpateOrder(order alpaca.Order, orderType string) (*mongo.UpdateResult, error) {
 	collection := client.Database("Stocks").Collection("orders")
-	filter := bson.M{"order.id": order.ID}
+	orderKey := fmt.Sprintf("%s.id", orderType)
+	filter := bson.M{orderKey: order.ID}
 	update := bson.M{
 		"$set": bson.M{
-			"order":           order,
+			orderType:         order,
 			"recordUpdatedAt": time.Now().UTC(),
 		},
 	}
@@ -55,25 +56,13 @@ func (client MongoClient) UpateOrder(order alpaca.Order) (*mongo.UpdateResult, e
 func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) {
 	// Update all expired orders
 	collection := client.Database("Stocks").Collection("orders")
-	filter := bson.M{"order.status": "expired", "tradeCompleted": false}
-	update := bson.M{
-		"$set": bson.M{
-			"tradeCompleted":  true,
-			"recordUpdatedAt": time.Now().UTC(),
-			"tradeProfit":     0,
+	filter := bson.M{
+		"$or": []bson.M{
+			{"entryOrder.status": "expired"},
+			{"exitOrder.status": "canceled"},
 		},
+		"tradeCompleted": false,
 	}
-	result, err := collection.UpdateMany(context.TODO(), filter, update)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
-}
-
-func (client MongoClient) UpdateAllCancelledOrders() (*mongo.UpdateResult, error) {
-	// Update all cancelled orders
-	collection := client.Database("Stocks").Collection("orders")
-	filter := bson.M{"order.status": "canceled", "tradeCompleted": false}
 	update := bson.M{
 		"$set": bson.M{
 			"tradeCompleted":  true,
