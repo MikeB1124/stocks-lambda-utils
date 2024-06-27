@@ -63,14 +63,15 @@ func (client AlpacaClient) CreateAlpacaOrder(
 		orderRequest.LimitPrice = &entryPriceDecimal
 	}
 
-	// if orderClass == "bracket" {
-	// 	stopPriceDecimal := decimal.NewFromFloat(stopPrice)
-	// 	orderRequest.OrderClass = alpaca.OrderClass(orderClass)
-	// 	orderRequest.StopLoss.StopPrice = &stopPriceDecimal
+	if orderClass == "bracket" {
+		orderRequest.OrderClass = alpaca.OrderClass(orderClass)
 
-	// 	takeProfitDecimal := decimal.NewFromFloat(takeProfit)
-	// 	orderRequest.TakeProfit.LimitPrice = &takeProfitDecimal
-	// }
+		// stopPriceDecimal := decimal.NewFromFloat(stopPrice)
+		// orderRequest.StopLoss.StopPrice = &stopPriceDecimal
+
+		takeProfitDecimal := decimal.NewFromFloat(takeProfit)
+		orderRequest.TakeProfit.LimitPrice = &takeProfitDecimal
+	}
 
 	order, err := client.PlaceOrder(orderRequest)
 	if err != nil {
