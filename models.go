@@ -39,37 +39,37 @@ type AlpacaTrade struct {
 }
 
 type Order struct {
-	ID             string     `json:"id" bson:"id"`
-	ClientOrderID  string     `json:"client_order_id" bson:"client_order_id"`
-	CreatedAt      time.Time  `json:"created_at" bson:"created_at"`
-	UpdatedAt      time.Time  `json:"updated_at" bson:"updated_at"`
-	SubmittedAt    time.Time  `json:"submitted_at" bson:"submitted_at"`
-	FilledAt       *time.Time `json:"filled_at" bson:"filled_at"`
-	ExpiredAt      *time.Time `json:"expired_at" bson:"expired_at"`
-	CanceledAt     *time.Time `json:"canceled_at" bson:"canceled_at"`
-	FailedAt       *time.Time `json:"failed_at" bson:"failed_at"`
-	ReplacedAt     *time.Time `json:"replaced_at" bson:"replaced_at"`
-	ReplacedBy     *string    `json:"replaced_by" bson:"replaced_by"`
-	Replaces       *string    `json:"replaces" bson:"replaces"`
-	AssetID        string     `json:"asset_id" bson:"asset_id"`
-	Symbol         string     `json:"symbol" bson:"symbol"`
-	AssetClass     string     `json:"asset_class" bson:"asset_class"`
-	OrderClass     string     `json:"order_class" bson:"order_class"`
-	Type           string     `json:"type" bson:"type"`
-	Side           string     `json:"side" bson:"side"`
-	TimeInForce    string     `json:"time_in_force" bson:"time_in_force"`
-	Status         string     `json:"status" bson:"status"`
-	Notional       string     `json:"notional,omitempty" bson:"notional,omitempty"`
-	Qty            string     `json:"qty,omitempty" bson:"qty,omitempty"`
-	FilledQty      string     `json:"filled_qty" bson:"filled_qty"`
-	FilledAvgPrice string     `json:"filled_avg_price,omitempty" bson:"filled_avg_price,omitempty"`
-	LimitPrice     string     `json:"limit_price,omitempty" bson:"limit_price,omitempty"`
-	StopPrice      string     `json:"stop_price,omitempty" bson:"stop_price,omitempty"`
-	TrailPrice     string     `json:"trail_price,omitempty" bson:"trail_price,omitempty"`
-	TrailPercent   string     `json:"trail_percent,omitempty" bson:"trail_percent,omitempty"`
-	HWM            string     `json:"hwm,omitempty" bson:"hwm,omitempty"`
-	ExtendedHours  bool       `json:"extended_hours" bson:"extended_hours"`
-	Legs           []Order    `json:"legs,omitempty" bson:"legs,omitempty"`
+	ID             string             `json:"id" bson:"id"`
+	ClientOrderID  string             `json:"client_order_id" bson:"client_order_id"`
+	CreatedAt      time.Time          `json:"created_at" bson:"created_at"`
+	UpdatedAt      time.Time          `json:"updated_at" bson:"updated_at"`
+	SubmittedAt    time.Time          `json:"submitted_at" bson:"submitted_at"`
+	FilledAt       *time.Time         `json:"filled_at" bson:"filled_at"`
+	ExpiredAt      *time.Time         `json:"expired_at" bson:"expired_at"`
+	CanceledAt     *time.Time         `json:"canceled_at" bson:"canceled_at"`
+	FailedAt       *time.Time         `json:"failed_at" bson:"failed_at"`
+	ReplacedAt     *time.Time         `json:"replaced_at" bson:"replaced_at"`
+	ReplacedBy     *string            `json:"replaced_by" bson:"replaced_by"`
+	Replaces       *string            `json:"replaces" bson:"replaces"`
+	AssetID        string             `json:"asset_id" bson:"asset_id"`
+	Symbol         string             `json:"symbol" bson:"symbol"`
+	AssetClass     alpaca.AssetClass  `json:"asset_class" bson:"asset_class"`
+	OrderClass     alpaca.OrderClass  `json:"order_class" bson:"order_class"`
+	Type           alpaca.OrderType   `json:"type" bson:"type"`
+	Side           alpaca.Side        `json:"side" bson:"side"`
+	TimeInForce    alpaca.TimeInForce `json:"time_in_force" bson:"time_in_force"`
+	Status         string             `json:"status" bson:"status"`
+	Notional       string             `json:"notional,omitempty" bson:"notional,omitempty"`
+	Qty            string             `json:"qty,omitempty" bson:"qty,omitempty"`
+	FilledQty      string             `json:"filled_qty" bson:"filled_qty"`
+	FilledAvgPrice string             `json:"filled_avg_price,omitempty" bson:"filled_avg_price,omitempty"`
+	LimitPrice     string             `json:"limit_price,omitempty" bson:"limit_price,omitempty"`
+	StopPrice      string             `json:"stop_price,omitempty" bson:"stop_price,omitempty"`
+	TrailPrice     string             `json:"trail_price,omitempty" bson:"trail_price,omitempty"`
+	TrailPercent   string             `json:"trail_percent,omitempty" bson:"trail_percent,omitempty"`
+	HWM            string             `json:"hwm,omitempty" bson:"hwm,omitempty"`
+	ExtendedHours  bool               `json:"extended_hours" bson:"extended_hours"`
+	Legs           []Order            `json:"legs,omitempty" bson:"legs,omitempty"`
 }
 
 type Response struct {
