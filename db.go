@@ -36,7 +36,7 @@ func (client MongoClient) InsertEntryOrder(order AlpacaTrade) error {
 	return err
 }
 
-func (client MongoClient) UpateOrder(order alpaca.Order, orderType string) (*mongo.UpdateResult, error) {
+func (client MongoClient) UpateOrder(order Order, orderType string) (*mongo.UpdateResult, error) {
 	collection := client.Database("Stocks").Collection("orders")
 	orderKey := fmt.Sprintf("%s.id", orderType)
 	filter := bson.M{orderKey: order.ID}
