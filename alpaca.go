@@ -37,15 +37,15 @@ func (client AlpacaClient) GetAlpacaAccount() *alpaca.Account {
 	return acct
 }
 
-func (client AlpacaClient) CreateBracketOrder(symbol string, entryPrice float64, qty int, orderType string) (*alpaca.Order, error) {
+func (client AlpacaClient) CreateBracketOrder(symbol string, entryPrice float64, qty int, orderSide string, orderType string) (*alpaca.Order, error) {
 	entryPriceDecimal := decimal.NewFromFloat(entryPrice)
 	qtyDecimal := decimal.NewFromInt(int64(qty))
 
 	order, err := client.PlaceOrder(alpaca.PlaceOrderRequest{
 		Symbol:      symbol,
 		Qty:         &qtyDecimal,
-		Side:        alpaca.Side(orderType),
-		Type:        alpaca.Limit,
+		Side:        alpaca.Side(orderSide),
+		Type:        alpaca.OrderType(orderType),
 		TimeInForce: alpaca.Day,
 		LimitPrice:  &entryPriceDecimal,
 	})
