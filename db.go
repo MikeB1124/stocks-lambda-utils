@@ -76,3 +76,37 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	}
 	return result, nil
 }
+
+func FormatAlpacaOrderForDB(alpacaOrder *alpaca.Order) *Order {
+	var order Order
+	order.ID = alpacaOrder.ID
+	order.ClientOrderID = alpacaOrder.ClientOrderID
+	order.CreatedAt = alpacaOrder.CreatedAt
+	order.UpdatedAt = alpacaOrder.UpdatedAt
+	order.SubmittedAt = alpacaOrder.SubmittedAt
+	order.FilledAt = alpacaOrder.FilledAt
+	order.ExpiredAt = alpacaOrder.ExpiredAt
+	order.CanceledAt = alpacaOrder.CanceledAt
+	order.FailedAt = alpacaOrder.FailedAt
+	order.ReplacedAt = alpacaOrder.ReplacedAt
+	order.ReplacedBy = alpacaOrder.ReplacedBy
+	order.Replaces = alpacaOrder.Replaces
+	order.AssetID = alpacaOrder.AssetID
+	order.Symbol = alpacaOrder.Symbol
+	order.AssetClass = alpacaOrder.AssetClass
+	order.OrderClass = alpacaOrder.OrderClass
+	order.Type = alpacaOrder.Type
+	order.Side = alpacaOrder.Side
+	order.TimeInForce = alpacaOrder.TimeInForce
+	order.Status = alpacaOrder.Status
+	order.Qty = alpacaOrder.Qty.String()
+	order.FilledQty = alpacaOrder.FilledQty.String()
+	if alpacaOrder.FilledAvgPrice != nil {
+		order.FilledAvgPrice = alpacaOrder.FilledAvgPrice.String()
+	}
+	order.LimitPrice = alpacaOrder.LimitPrice.String()
+	if alpacaOrder.StopPrice != nil {
+		order.StopPrice = alpacaOrder.StopPrice.String()
+	}
+	return &order
+}
