@@ -1,8 +1,6 @@
 package stockslambdautils
 
 import (
-	"fmt"
-
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/shopspring/decimal"
 )
@@ -78,8 +76,6 @@ func (client AlpacaClient) CreateAlpacaOrder(
 			LimitPrice: &takeProfitDecimal,
 		}
 	}
-
-	fmt.Printf("Order Request: %+v\n", orderRequest)
 
 	order, err := client.PlaceOrder(orderRequest)
 	if err != nil {

@@ -113,7 +113,9 @@ func formatOrderForDB(alpacaOrder *alpaca.Order) Order {
 	if alpacaOrder.FilledAvgPrice != nil {
 		order.FilledAvgPrice = alpacaOrder.FilledAvgPrice.String()
 	}
-	order.LimitPrice = alpacaOrder.LimitPrice.String()
+	if alpacaOrder.LimitPrice != nil {
+		order.LimitPrice = alpacaOrder.LimitPrice.String()
+	}
 	if alpacaOrder.StopPrice != nil {
 		order.StopPrice = alpacaOrder.StopPrice.String()
 	}
