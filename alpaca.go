@@ -67,10 +67,14 @@ func (client AlpacaClient) CreateAlpacaOrder(
 		orderRequest.OrderClass = alpaca.OrderClass(orderClass)
 
 		stopPriceDecimal := decimal.NewFromFloat(stopPrice)
-		orderRequest.StopLoss.StopPrice = &stopPriceDecimal
+		orderRequest.StopLoss = &alpaca.StopLoss{
+			StopPrice: &stopPriceDecimal,
+		}
 
-		// takeProfitDecimal := decimal.NewFromFloat(takeProfit)
-		// orderRequest.TakeProfit.LimitPrice = &takeProfitDecimal
+		takeProfitDecimal := decimal.NewFromFloat(takeProfit)
+		orderRequest.TakeProfit = &alpaca.TakeProfit{
+			LimitPrice: &takeProfitDecimal,
+		}
 	}
 
 	order, err := client.PlaceOrder(orderRequest)
