@@ -64,7 +64,6 @@ type Order struct {
 	FilledAvgPrice string             `json:"filled_avg_price,omitempty" bson:"filled_avg_price,omitempty"`
 	LimitPrice     string             `json:"limit_price,omitempty" bson:"limit_price,omitempty"`
 	StopPrice      string             `json:"stop_price,omitempty" bson:"stop_price,omitempty"`
-	ExtendedHours  bool               `json:"extended_hours" bson:"extended_hours"`
 }
 
 type Response struct {
