@@ -30,7 +30,7 @@ func NewMongoClient(username string, password string) (MongoClient, error) {
 	return MongoClient{client}, nil
 }
 
-func (client MongoClient) InsertEntryOrder(order AlpacaEntryOrder) error {
+func (client MongoClient) InsertEntryOrder(order AlpacaTrade) error {
 	collection := client.Database("Stocks").Collection("orders")
 	_, err := collection.InsertOne(context.TODO(), order)
 	return err
