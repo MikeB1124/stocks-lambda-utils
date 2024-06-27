@@ -30,8 +30,7 @@ type PatternData struct {
 
 type AlpacaTrade struct {
 	ObjectID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	EntryOrder      *Order             `json:"entryOrder" bson:"entryOrder"`
-	ExitOrder       *Order             `json:"exitOrder" bson:"exitOrder"`
+	Order           *Order             `json:"order" bson:"order"`
 	TradeCompleted  bool               `json:"tradeCompleted" bson:"tradeCompleted"`
 	TradeProfit     float64            `json:"tradeProfit" bson:"tradeProfit"`
 	PatternData     PatternData        `json:"patternData" bson:"patternData"`
@@ -59,11 +58,12 @@ type Order struct {
 	Side           alpaca.Side        `json:"side" bson:"side"`
 	TimeInForce    alpaca.TimeInForce `json:"time_in_force" bson:"time_in_force"`
 	Status         string             `json:"status" bson:"status"`
-	Qty            string             `json:"qty,omitempty" bson:"qty,omitempty"`
+	Qty            string             `json:"qty" bson:"qty"`
 	FilledQty      string             `json:"filled_qty" bson:"filled_qty"`
-	FilledAvgPrice string             `json:"filled_avg_price,omitempty" bson:"filled_avg_price,omitempty"`
-	LimitPrice     string             `json:"limit_price,omitempty" bson:"limit_price,omitempty"`
-	StopPrice      string             `json:"stop_price,omitempty" bson:"stop_price,omitempty"`
+	FilledAvgPrice string             `json:"filled_avg_price" bson:"filled_avg_price"`
+	LimitPrice     string             `json:"limit_price" bson:"limit_price"`
+	StopPrice      string             `json:"stop_price" bson:"stop_price"`
+	Legs           []Order            `json:"legs" bson:"legs"`
 }
 
 type Response struct {

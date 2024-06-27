@@ -37,7 +37,17 @@ func (client AlpacaClient) GetAlpacaAccount() *alpaca.Account {
 	return acct
 }
 
-func (client AlpacaClient) CreateAlpacaOrder(symbol string, entryPrice float64, stopPrice float64, qty int, orderSide string, orderType string) (*alpaca.Order, error) {
+func (client AlpacaClient) CreateAlpacaOrder(
+	symbol string,
+	entryPrice float64,
+	stopPrice float64,
+	takeProfit float64,
+	qty int,
+	orderSide string,
+	orderType string,
+	orderClass string,
+	timeInForce string,
+) (*alpaca.Order, error) {
 	qtyDecimal := decimal.NewFromInt(int64(qty))
 
 	orderRequest := alpaca.PlaceOrderRequest{
@@ -45,17 +55,21 @@ func (client AlpacaClient) CreateAlpacaOrder(symbol string, entryPrice float64, 
 		Qty:         &qtyDecimal,
 		Side:        alpaca.Side(orderSide),
 		Type:        alpaca.OrderType(orderType),
-		TimeInForce: alpaca.Day,
+		TimeInForce: alpaca.TimeInForce(timeInForce),
 	}
 
-	if orderType == "limit" {
+	if orderType == "limit" || orderType == "stop_limit" {
 		entryPriceDecimal := decimal.NewFromFloat(entryPrice)
 		orderRequest.LimitPrice = &entryPriceDecimal
 	}
 
-	if orderType == "stop_limit" || orderType == "stop" {
+	if orderClass == "bracket" {
 		stopPriceDecimal := decimal.NewFromFloat(stopPrice)
-		orderRequest.StopPrice = &stopPriceDecimal
+		orderRequest.OrderClass = alpaca.OrderClass(orderClass)
+		orderRequest.StopLoss.StopPrice = &stopPriceDecimal
+
+		takeProfitDecimal := decimal.NewFromFloat(takeProfit)
+		orderRequest.TakeProfit.LimitPrice = &takeProfitDecimal
 	}
 
 	order, err := client.PlaceOrder(orderRequest)

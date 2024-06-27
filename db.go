@@ -36,13 +36,12 @@ func (client MongoClient) InsertEntryOrder(order AlpacaTrade) error {
 	return err
 }
 
-func (client MongoClient) UpateOrder(order Order, orderType string) (*mongo.UpdateResult, error) {
+func (client MongoClient) UpateOrder(order Order) (*mongo.UpdateResult, error) {
 	collection := client.Database("Stocks").Collection("orders")
-	orderKey := fmt.Sprintf("%s.id", orderType)
-	filter := bson.M{orderKey: order.ID}
+	filter := bson.M{"order.id": order.ID}
 	update := bson.M{
 		"$set": bson.M{
-			orderType:         order,
+			"order":           order,
 			"recordUpdatedAt": time.Now().UTC(),
 		},
 	}
@@ -58,8 +57,8 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	collection := client.Database("Stocks").Collection("orders")
 	filter := bson.M{
 		"$or": []bson.M{
-			{"entryOrder.status": "expired"},
-			{"entryOrder.status": "canceled"},
+			{"order.status": "expired"},
+			{"order.status": "canceled"},
 		},
 		"tradeCompleted": false,
 	}
