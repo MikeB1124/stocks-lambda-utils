@@ -59,7 +59,7 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	filter := bson.M{
 		"$or": []bson.M{
 			{"entryOrder.status": "expired"},
-			{"exitOrder.status": "canceled"},
+			{"entryOrder.status": "canceled"},
 		},
 		"tradeCompleted": false,
 	}
