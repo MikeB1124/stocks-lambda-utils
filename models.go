@@ -30,7 +30,7 @@ type PatternData struct {
 
 type AlpacaTrade struct {
 	ObjectID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Order           *Order             `json:"order" bson:"order"`
+	Order           Order              `json:"order" bson:"order"`
 	TradeCompleted  bool               `json:"tradeCompleted" bson:"tradeCompleted"`
 	TradeProfit     float64            `json:"tradeProfit" bson:"tradeProfit"`
 	PatternData     PatternData        `json:"patternData" bson:"patternData"`
