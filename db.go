@@ -76,12 +76,14 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	return result, nil
 }
 
-func (client MongoClient) GetPositiveOrdersFromDB() ([]AlpacaTrade, error) {
+func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 	collection := client.Database("Stocks").Collection("orders")
 	filter := bson.M{
-		"order.legs.0.type":   "limit",
-		"order.legs.0.status": "filled",
-		"tradeCompleted":      false,
+		"$or": []bson.M{
+			{"order.legs.0.status": "filled"},
+			{"order.legs.1.status": "filled"},
+		},
+		"tradeCompleted": false,
 	}
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -93,26 +95,6 @@ func (client MongoClient) GetPositiveOrdersFromDB() ([]AlpacaTrade, error) {
 		return nil, err
 	}
 	return orders, nil
-}
-
-func (client MongoClient) GetNegativeOrdersFromDB() ([]AlpacaTrade, error) {
-	collection := client.Database("Stocks").Collection("orders")
-	filter := bson.M{
-		"order.legs.1.type":   "stop",
-		"order.legs.1.status": "filled",
-		"tradeCompleted":      false,
-	}
-	cursor, err := collection.Find(context.TODO(), filter)
-	if err != nil {
-		return nil, err
-	}
-	var orders []AlpacaTrade
-	err = cursor.All(context.TODO(), &orders)
-	if err != nil {
-		return nil, err
-	}
-	return orders, nil
-
 }
 
 func FormatAlpacaOrderForDB(alpacaOrder *alpaca.Order) *Order {
