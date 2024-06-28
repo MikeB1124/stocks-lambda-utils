@@ -18,17 +18,6 @@ func NewAlpacaClient(apiKey string, apiSecret string, baseUrl string) AlpacaClie
 	return AlpacaClient{client}
 }
 
-func (client AlpacaClient) GetAllAlpacaOrders() ([]alpaca.Order, error) {
-	orders, err := client.GetOrders(alpaca.GetOrdersRequest{
-		Nested: true,
-		Status: "all",
-	})
-	if err != nil {
-		return nil, err
-	}
-	return orders, nil
-}
-
 func (client AlpacaClient) GetAlpacaAccount() *alpaca.Account {
 	acct, err := client.GetAccount()
 	if err != nil {
@@ -84,12 +73,17 @@ func (client AlpacaClient) CreateAlpacaOrder(
 	return order, nil
 }
 
-func (client AlpacaClient) GetAlpacaOrders(status string, symbols []string) ([]alpaca.Order, error) {
-	orders, err := client.GetOrders(alpaca.GetOrdersRequest{
-		Status:  status,
-		Nested:  true,
-		Symbols: symbols,
-	})
+func (client AlpacaClient) GetAlpacaOrders(status string, symbols []string, nested bool) ([]alpaca.Order, error) {
+	orderRequest := alpaca.GetOrdersRequest{
+		Status: status,
+		Nested: nested,
+	}
+
+	if len(symbols) != 0 {
+		orderRequest.Symbols = symbols
+	}
+
+	orders, err := client.GetOrders(orderRequest)
 	if err != nil {
 		return nil, err
 	}
