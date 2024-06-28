@@ -77,7 +77,7 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 }
 
 func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
-	collection := client.Database("Stocks").Collection("orders2")
+	collection := client.Database("Stocks").Collection("orders")
 	filter := bson.M{
 		"$or": []bson.M{
 			{"order.legs.0.status": "filled"},
@@ -98,7 +98,7 @@ func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 }
 
 func (client MongoClient) BulkUpdateTradeProfits(trades []AlpacaTrade) (*mongo.BulkWriteResult, error) {
-	collection := client.Database("Stocks").Collection("orders2")
+	collection := client.Database("Stocks").Collection("orders")
 	var updates []mongo.WriteModel
 	for _, trade := range trades {
 		filter := bson.M{"_id": trade.ObjectID}
