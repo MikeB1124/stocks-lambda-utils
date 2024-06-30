@@ -36,22 +36,6 @@ func (client MongoClient) InsertEntryOrder(order AlpacaTrade) error {
 	return err
 }
 
-func (client MongoClient) UpateOrder(order Order) (*mongo.UpdateResult, error) {
-	collection := client.Database("Stocks").Collection("orders")
-	filter := bson.M{"order.id": order.ID}
-	update := bson.M{
-		"$set": bson.M{
-			"order":           order,
-			"recordUpdatedAt": time.Now().UTC(),
-		},
-	}
-	updateResult, err := collection.UpdateOne(context.TODO(), filter, update)
-	if err != nil {
-		return nil, err
-	}
-	return updateResult, nil
-}
-
 func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) {
 	// Update all expired orders
 	collection := client.Database("Stocks").Collection("orders")
@@ -98,7 +82,7 @@ func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 }
 
 func (client MongoClient) GetOpenTrades() ([]AlpacaTrade, error) {
-	collection := client.Database("Stocks").Collection("orders2")
+	collection := client.Database("Stocks").Collection("orders")
 	filter := bson.M{
 		"tradeCompleted": false,
 	}
@@ -136,7 +120,7 @@ func (client MongoClient) BulkUpdateTradeProfits(trades []AlpacaTrade) (*mongo.B
 }
 
 func (client MongoClient) BulkUpdateTrades(trades []AlpacaTrade) (*mongo.BulkWriteResult, error) {
-	collection := client.Database("Stocks").Collection("orders2")
+	collection := client.Database("Stocks").Collection("orders")
 	var updates []mongo.WriteModel
 	for _, trade := range trades {
 		filter := bson.M{"_id": trade.ObjectID}
