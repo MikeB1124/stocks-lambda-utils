@@ -90,6 +90,14 @@ func (client AlpacaClient) GetAlpacaOrders(status string, symbols []string, nest
 	return orders, nil
 }
 
+func (client AlpacaClient) GetAlpacaOrderByID(orderID string) (*alpaca.Order, error) {
+	order, err := client.GetOrder(orderID)
+	if err != nil {
+		return nil, err
+	}
+	return order, nil
+}
+
 func (client AlpacaClient) CancelAlpacaOrder(orderID string) error {
 	err := client.CancelOrder(orderID)
 	if err != nil {
