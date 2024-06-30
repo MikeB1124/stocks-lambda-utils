@@ -97,6 +97,23 @@ func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 	return orders, nil
 }
 
+func (client MongoClient) GetOpenTrades() ([]AlpacaTrade, error) {
+	collection := client.Database("Stocks").Collection("orders")
+	filter := bson.M{
+		"tradeCompleted": false,
+	}
+	cursor, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+	var orders []AlpacaTrade
+	err = cursor.All(context.TODO(), &orders)
+	if err != nil {
+		return nil, err
+	}
+	return orders, nil
+}
+
 func (client MongoClient) BulkUpdateTradeProfits(trades []AlpacaTrade) (*mongo.BulkWriteResult, error) {
 	collection := client.Database("Stocks").Collection("orders")
 	var updates []mongo.WriteModel
