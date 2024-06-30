@@ -98,7 +98,7 @@ func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 }
 
 func (client MongoClient) GetOpenTrades() ([]AlpacaTrade, error) {
-	collection := client.Database("Stocks").Collection("orders")
+	collection := client.Database("Stocks").Collection("orders2")
 	filter := bson.M{
 		"tradeCompleted": false,
 	}
@@ -123,6 +123,26 @@ func (client MongoClient) BulkUpdateTradeProfits(trades []AlpacaTrade) (*mongo.B
 			"$set": bson.M{
 				"tradeProfit":     trade.TradeProfit,
 				"tradeCompleted":  true,
+				"recordUpdatedAt": time.Now().UTC(),
+			},
+		}
+		updates = append(updates, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update))
+	}
+	bulkWriteResult, err := collection.BulkWrite(context.TODO(), updates)
+	if err != nil {
+		return nil, err
+	}
+	return bulkWriteResult, nil
+}
+
+func (client MongoClient) BulkUpdateTrades(trades []AlpacaTrade) (*mongo.BulkWriteResult, error) {
+	collection := client.Database("Stocks").Collection("orders2")
+	var updates []mongo.WriteModel
+	for _, trade := range trades {
+		filter := bson.M{"_id": trade.ObjectID}
+		update := bson.M{
+			"$set": bson.M{
+				"order":           trade.Order,
 				"recordUpdatedAt": time.Now().UTC(),
 			},
 		}
