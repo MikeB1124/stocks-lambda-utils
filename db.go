@@ -65,7 +65,9 @@ func (client MongoClient) GetFilledTradesFromDB() ([]AlpacaTrade, error) {
 	filter := bson.M{
 		"$or": []bson.M{
 			{"order.legs.0.status": "filled"},
+			{"order.legs.0.status": "partially_filled"},
 			{"order.legs.1.status": "filled"},
+			{"order.legs.1.status": "partially_filled"},
 		},
 		"tradeCompleted": false,
 	}
