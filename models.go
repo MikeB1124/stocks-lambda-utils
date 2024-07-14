@@ -66,6 +66,12 @@ type Order struct {
 	Legs           []Order            `json:"legs" bson:"legs"`
 }
 
+type Settings struct {
+	Env          string  `json:"env"`
+	TradePercent float64 `json:"tradePercent"`
+	MinCash      float64 `json:"minCash"`
+}
+
 type Response struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`

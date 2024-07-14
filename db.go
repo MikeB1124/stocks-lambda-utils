@@ -142,6 +142,16 @@ func (client MongoClient) BulkUpdateTrades(trades []AlpacaTrade) (*mongo.BulkWri
 	return bulkWriteResult, nil
 }
 
+func (client MongoClient) GetSettings() (Settings, error) {
+	var settings Settings
+	coll := client.Database("Stocks").Collection("settings")
+	err := coll.FindOne(context.TODO(), bson.M{"env": client.Env}).Decode(&settings)
+	if err != nil {
+		return Settings{}, err
+	}
+	return settings, nil
+}
+
 func FormatAlpacaOrderForDB(alpacaOrder *alpaca.Order) *Order {
 	var order Order
 	order = formatOrderForDB(alpacaOrder)
