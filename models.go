@@ -29,12 +29,14 @@ type PatternData struct {
 }
 
 type AlpacaTrade struct {
-	ObjectID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Order           *Order             `json:"order" bson:"order"`
-	TradeCompleted  bool               `json:"tradeCompleted" bson:"tradeCompleted"`
-	TradeProfit     float64            `json:"tradeProfit" bson:"tradeProfit"`
-	PatternData     PatternData        `json:"patternData" bson:"patternData"`
-	RecordUpdatedAt *time.Time         `json:"recordUpdatedAt" bson:"recordUpdatedAt"`
+	ObjectID         primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+	Order            *Order             `json:"order" bson:"order"`
+	TradeCompleted   bool               `json:"tradeCompleted" bson:"tradeCompleted"`
+	TradeProfit      float64            `json:"tradeProfit" bson:"tradeProfit"`
+	TradeCanceled    bool               `json:"tradeCanceled" bson:"tradeCanceled"`
+	PercentageReturn float64            `json:"percentageReturn" bson:"percentageReturn"`
+	PatternData      PatternData        `json:"patternData" bson:"patternData"`
+	RecordUpdatedAt  *time.Time         `json:"recordUpdatedAt" bson:"recordUpdatedAt"`
 }
 
 type Order struct {
@@ -68,6 +70,8 @@ type Order struct {
 
 type Settings struct {
 	Env          string  `json:"env"`
+	Acive        bool    `json:"active"`
+	ApiURL       string  `json:"apiUrl"`
 	TradePercent float64 `json:"tradePercent"`
 	MinCash      float64 `json:"minCash"`
 }
