@@ -50,6 +50,7 @@ func (client MongoClient) UpdateAllExpiredOrders() (*mongo.UpdateResult, error) 
 	update := bson.M{
 		"$set": bson.M{
 			"tradeCompleted":  true,
+			"tradeCanceled":   true,
 			"recordUpdatedAt": time.Now().UTC(),
 			"tradeProfit":     0,
 		},
