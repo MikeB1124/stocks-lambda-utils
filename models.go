@@ -70,7 +70,7 @@ type Order struct {
 
 type Settings struct {
 	Env          string  `json:"env"`
-	Acive        bool    `json:"active"`
+	Active       bool    `json:"active"`
 	ApiURL       string  `json:"apiUrl"`
 	TradePercent float64 `json:"tradePercent"`
 	MinCash      float64 `json:"minCash"`
