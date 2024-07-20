@@ -153,6 +153,20 @@ func (client MongoClient) GetSettings() (Settings, error) {
 	return settings, nil
 }
 
+func (client MongoClient) GetAllSettings() ([]Settings, error) {
+	var settings []Settings
+	coll := client.Database("Stocks").Collection("settings")
+	cursor, err := coll.Find(context.TODO(), bson.M{})
+	if err != nil {
+		return []Settings{}, err
+	}
+	err = cursor.All(context.TODO(), &settings)
+	if err != nil {
+		return []Settings{}, err
+	}
+	return settings, nil
+}
+
 func FormatAlpacaOrderForDB(alpacaOrder *alpaca.Order) *Order {
 	var order Order
 	order = formatOrderForDB(alpacaOrder)
