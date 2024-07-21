@@ -72,6 +72,7 @@ type Settings struct {
 	Env          string  `json:"env"`
 	Active       bool    `json:"active"`
 	ApiURL       string  `json:"apiUrl"`
+	ApiKey       string  `json:"apiKey"`
 	TradePercent float64 `json:"tradePercent"`
 	MinCash      float64 `json:"minCash"`
 }
